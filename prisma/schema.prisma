@@ -13,31 +13,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Profile {
-  id String @id @default(uuid())
-  userId String @unique
-  name String
-  imageUrl String @db.Text
-  email String  @db.Text
-  // tasks Task[]
+  id       String   @id @default(uuid())
+  userId   String   @unique
+  name     String
+  imageUrl String   @db.Text
+  email    String   @db.Text
+  tasks    Task[]
+  groups   Group[]  // One-to-many relationship with groups (groups created by this profile)
   createdAt DateTime @default(now())
-  updateddAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
-// model Task {
-//   id String @id @default(uuid())
-//   title  String
-//   description String?
-//   status   Boolean   @default(false)
-//   dueDate     DateTime?
-//   profileId String
-//   profile Profile @relation(fields: [profileId],references: [id],onDelete: Cascade)
-//   createdAt DateTime @default(now())
-//   updateddAt DateTime @default(now())
-//   @@index([profileId])
-// }
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
 
-// model Group {
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  status      Boolean  @default(false)
+  dueDate     DateTime?
+  profileId   String
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  groupId     String?  // Optional field to associate a task with a group
+  group       Group?   @relation(fields: [groupId], references: [id])
+  @@index([profileId])
+}
 
-// }
+model Group {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  imageUrl    String?  // Optional field for image URL
+  profileId   String   // Add field to store the creator's profileId
+  profile     Profile  @relation(fields: [profileId], references: [id])
+  tasks       Task[]   // One-to-many relationship with tasks
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}

@@ -1,5 +1,11 @@
+import TaskGroupModal from "@/components/modal/task-group-modal";
 import { Input } from "@/components/ui/input";
-import { Filter, ListFilter, Search } from "lucide-react";
+
+import {
+  Filter,
+  ListFilter,
+  Search,
+} from "lucide-react";
 
 const Task = () => {
   return (
@@ -14,7 +20,7 @@ const Task = () => {
             />
           </div>
           <div className="w-1/4 pl-2">
-            <ul className="flex space-x-3">
+            <ul className="flex items-center justify-between">
               <li className="flex items-center space-x-3 text-sm">
                 <Filter className="w-4 h-4 me-2" />
                 Filter
@@ -22,6 +28,9 @@ const Task = () => {
               <li className="flex items-center space-x-3 text-sm">
                 <ListFilter className="w-4 h-4 me-2" />
                 Sort by
+              </li>
+              <li>
+                <TaskGroupModal />
               </li>
             </ul>
           </div>
